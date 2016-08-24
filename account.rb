@@ -4,8 +4,9 @@ module Bank
 
     attr_accessor :balance
 
-    def initialize(initial_balance_input)
+    def initialize(initial_balance_input, account_owner_name)
       @initial_balance = Money.new(initial_balance_input * 100, "USD")
+      @account_owner = Bank::Owner.new(account_owner_name)
       @id = rand(111111..999999)
       @balance = balance
 
@@ -16,24 +17,24 @@ module Bank
       end
     end
 
-    def balance_check
+    def current_balance
       puts "Your current balance is $#{ @balance }."
       return @balance
     end
 
     def withdraw(withdrawn)
       if @balance - Money.new(withdrawn * 100, "USD") < 0
-        puts "You can't withdraw that much money. It would result in a negative balance. Please try again."
+        puts "You can't withdraw that much money. It would result in a negative balance."
         return @balance
       else
         @balance -= Money.new(withdrawn * 100, "USD")
-        return @balance
+        current_balance
       end
     end
 
     def deposit(deposited)
       @balance += Money.new(deposited * 100, "USD")
-      return @balance
+      current_balance
     end
   end
 end
