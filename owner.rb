@@ -36,7 +36,6 @@ module Bank
       owners = self.all
       owners.each do |owner|
         if owner.id == id
-          puts "Owner #{ owner.owner_first_name } #{ owner.owner_last_name } (\##{ owner.id })"
           return owner
         end
       end

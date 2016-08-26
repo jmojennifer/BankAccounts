@@ -1,5 +1,7 @@
+# General comment: would have made consistency/clarity changes if I'd had time
 
 require 'CSV'
+require_relative "owner"
 module Bank
   class Account
     attr_accessor :id, :balance, :creation_date, :account_owner
@@ -46,12 +48,7 @@ module Bank
         account_id = account[0].to_i
         account_balance = account[1]
         account_creation_date = account[2]
-
-        if account_balance.to_f < 0
-          raise ArgumentError.new("negative initial balance")
-        else
-          account_list.push(self.new(account_id, account_balance, account_creation_date))
-        end
+        account_list.push(self.new(account_id, account_balance, account_creation_date))
       end
       return account_list
     end
@@ -60,19 +57,20 @@ module Bank
       accounts = self.all
       accounts.each do |account|
         if account.id == id
-          puts "Account \##{ account.id }: Current Balance: $#{ account.balance }"
           return account
         end
       end
       puts "That ID is not present."
     end
 
-    #TODO: finish part 2 optional (creating relationship between owner and accounts) for Wave 2
-    # def add_owner
+    # TODO: finish part 2 optional (creating relationship between owner and accounts) for Wave 2
+    #       does not quite work as I would have expected
+    # def self.add_owner
     #   account_owner_ids = CSV.read("support/account_owners.csv", "r")
-    #   account_owner_ids.each do |account_num|
-    #     Bank::Account.find(account_num[0]).account_owner = @account_owner
-    #     @account_owner = Bank::Owner.find(account[0])
+    #   account_owner_ids.each do |account_nums|
+    #     @account_owner = Bank::Account.find(account_nums[0].to_i).account_owner
+    #     @account_owner = Bank::Owner.find(account_nums[1].to_i)
+    #     return @account_owner
     #   end
     # end
   end
